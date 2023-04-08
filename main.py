@@ -2,7 +2,7 @@ from flask import Flask, render_template, redirect, url_for, request
 from flask_bootstrap import Bootstrap4
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, IntegerField
+from wtforms import StringField, SubmitField, IntegerField, FloatField
 from wtforms.validators import DataRequired, URL
 import requests
 
@@ -19,18 +19,12 @@ db = SQLAlchemy(app)
 
 class MovieForm(FlaskForm):
     title = StringField("Movie title", validators=[DataRequired()])
-    year = IntegerField("Release year", validators=[DataRequired()])
-    description = StringField("Description", validators=[DataRequired()])
-    rating = IntegerField("Rating", validators=[DataRequired()])
-    ranking = IntegerField("Ranking", validators=[DataRequired()])
-    review = StringField("Review", validators=[DataRequired()])
-    img_url = StringField("Image URL", validators=[DataRequired(), URL()])
     submit = SubmitField("Submit")
 
 
 class EditForm(FlaskForm):
-    rating = IntegerField("Rating", validators=[DataRequired()])
-    ranking = IntegerField("Ranking", validators=[DataRequired()])
+    rating = FloatField("Rating", validators=[DataRequired()])
+    # ranking = IntegerField("Ranking", validators=[DataRequired()])
     review = StringField("Review", validators=[DataRequired()])
     submit = SubmitField("Submit")
 
@@ -41,7 +35,7 @@ class Movie(db.Model):
     title = db.Column(db.Integer, unique=True, nullable=False)
     year = db.Column(db.Integer, unique=False, nullable=False)
     description = db.Column(db.String(250), unique=False, nullable=False)
-    rating = db.Column(db.Integer, unique=False, nullable=False)
+    rating = db.Column(db.Float, unique=False, nullable=False)
     ranking = db.Column(db.Integer, unique=False, nullable=False)
     review = db.Column(db.String(250), unique=False, nullable=False)
     img_url = db.Column(db.String(250), unique=False, nullable=False)
@@ -84,7 +78,7 @@ def edit():
     if form.validate_on_submit():
         movie_to_update = Movie.query.get(id_number)
         movie_to_update.rating = request.form["rating"]
-        movie_to_update.ranking = request.form["ranking"]
+        # movie_to_update.ranking = request.form["ranking"]
         movie_to_update.review = request.form["review"]
         db.session.commit()
 

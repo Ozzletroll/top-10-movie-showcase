@@ -25,6 +25,7 @@ class MovieForm(FlaskForm):
     ranking = IntegerField("Ranking", validators=[DataRequired()])
     review = StringField("Review", validators=[DataRequired()])
     img_url = StringField("Image URL", validators=[DataRequired(), URL()])
+    submit = SubmitField("Submit")
 
 
 # Define models

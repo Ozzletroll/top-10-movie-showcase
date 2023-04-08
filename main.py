@@ -126,7 +126,7 @@ def add():
         response.raise_for_status()
         print(response.json())
 
-        return redirect(url_for("home"))
+        return redirect(url_for("select"))
 
     return render_template("add.html", form=form)
 

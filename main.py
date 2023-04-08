@@ -72,13 +72,16 @@ def home():
 @app.route("/edit", methods=["GET", "POST"])
 def edit():
     id_number = request.args.get("id")
+    form = MovieForm()
+    if form.validate_on_submit():
+        pass
 
     if request.method == "POST":
         # Get data from edit form
         return redirect(url_for("home"))
 
     movie_to_edit = Movie.query.filter_by(id=id_number).first()
-    return render_template("edit.html", movie=movie_to_edit)
+    return render_template("edit.html", movie=movie_to_edit, form=form)
 
 
 if __name__ == '__main__':

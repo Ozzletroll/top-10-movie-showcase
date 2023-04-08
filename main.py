@@ -2,8 +2,8 @@ from flask import Flask, render_template, redirect, url_for, request
 from flask_bootstrap import Bootstrap4
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
-from wtforms.validators import DataRequired
+from wtforms import StringField, SubmitField, IntegerField
+from wtforms.validators import DataRequired, URL
 import requests
 
 
@@ -15,6 +15,16 @@ Bootstrap4(app)
 # Configure database with SQLAlchemy
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///movie-database.db'
 db = SQLAlchemy(app)
+
+
+class MovieForm(FlaskForm):
+    title = StringField("Movie title", validators=[DataRequired()])
+    year = IntegerField("Release year", validators=[DataRequired()])
+    description = StringField("Description", validators=[DataRequired()])
+    rating = IntegerField("Rating", validators=[DataRequired()])
+    ranking = IntegerField("Ranking", validators=[DataRequired()])
+    review = StringField("Review", validators=[DataRequired()])
+    img_url = StringField("Image URL", validators=[DataRequired(), URL()])
 
 
 # Define models

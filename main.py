@@ -98,6 +98,19 @@ def delete():
     return redirect(url_for("home"))
 
 
+@app.route("/add", methods=["GET", "POST"])
+def add():
+    form = MovieForm()
+
+    if form.validate_on_submit():
+        movie_to_add = request.form["title"]
+
+        print(movie_to_add)
+
+        return redirect(url_for("home"))
+
+    return render_template("add.html", form=form)
+
 # movie = Movie(title=request.form["title"],
 #               year=request.form["year"],
 #               description=request.form["description"],
@@ -106,6 +119,7 @@ def delete():
 #               review=request.form["review"],
 #               img_url=request.form["image_url"]
 #               )
+
 
 if __name__ == '__main__':
     app.run(debug=True)

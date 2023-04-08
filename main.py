@@ -23,8 +23,8 @@ class Movie(db.Model):
     title = db.Column(db.Integer, unique=True, nullable=False)
     year = db.Column(db.Integer, unique=False, nullable=False)
     description = db.Column(db.String(250), unique=False, nullable=False)
-    rating = db.Column(db.Float, unique=False, nullable=False)
-    ranking = db.Column(db.Float, unique=False, nullable=False)
+    rating = db.Column(db.Integer, unique=False, nullable=False)
+    ranking = db.Column(db.Integer, unique=False, nullable=False)
     review = db.Column(db.String(250), unique=False, nullable=False)
     img_url = db.Column(db.String(250), unique=False, nullable=False)
 
@@ -44,8 +44,8 @@ with app.app_context():
     #                                   "fight the Turks.",
     #                       rating="9",
     #                       ranking="10",
-    #                       review="Vast, awe-inspiring, beautiful with ever-changing hues, exhausting and barren
-    #                       of humanity.",
+    #                       review="Vast, awe-inspiring, beautiful with ever-changing hues, exhausting and barren "
+    #                              "of humanity.",
     #                       img_url="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Lawrence_of_arabia_ver3_xxlg."
     #                               "jpg/800px-Lawrence_of_arabia_ver3_xxlg.jpg")
     #
@@ -55,7 +55,8 @@ with app.app_context():
 
 @app.route("/")
 def home():
-    return render_template("index.html")
+    movies = db.session.query(Movie).all()
+    return render_template("index.html", movies=movies)
 
 
 if __name__ == '__main__':

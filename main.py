@@ -74,10 +74,16 @@ def edit():
     id_number = request.args.get("id")
     form = MovieForm()
     if form.validate_on_submit():
-        pass
-
-    if request.method == "POST":
-        # Get data from edit form
+        movie = Movie(title=request.form["title"],
+                      year=request.form["year"],
+                      description=request.form["description"],
+                      rating=request.form["rating"],
+                      ranking=request.form["ranking"],
+                      review=request.form["review"],
+                      img_url=request.form["image_url"]
+                      )
+        db.session.add(movie)
+        db.session.commit()
         return redirect(url_for("home"))
 
     movie_to_edit = Movie.query.filter_by(id=id_number).first()

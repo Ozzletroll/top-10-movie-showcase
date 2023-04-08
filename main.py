@@ -5,6 +5,9 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, IntegerField, FloatField
 from wtforms.validators import DataRequired, URL
 import requests
+import os
+
+
 
 
 # Initialise Flask app
@@ -103,9 +106,25 @@ def add():
     form = MovieForm()
 
     if form.validate_on_submit():
-        movie_to_add = request.form["title"]
+        search_title = request.form["title"].lower()
 
-        print(movie_to_add)
+        api_key = os.environ["API_KEY"]
+        bearer_token = os.environ["BEARER_TOKEN"]
+        tmdb_endpoint = "https://api.themoviedb.org/3/search/movie"
+
+        query = {
+            "api_key": api_key,
+            "query": search_title,
+        }
+
+        headers = {
+            'Authorization': f'Bearer {bearer_token}',
+            'Content-Type': 'application/json;charset=utf-8',
+        }
+
+        response = requests.get(tmdb_endpoint, params=query, headers=headers)
+        response.raise_for_status()
+        print(response.json())
 
         return redirect(url_for("home"))
 

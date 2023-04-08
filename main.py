@@ -82,12 +82,12 @@ def edit():
     id_number = request.args.get("id")
     form = EditForm()
     if form.validate_on_submit():
-        movie = Movie(rating=request.form["rating"],
-                      ranking=request.form["ranking"],
-                      review=request.form["review"],
-                      )
-        db.session.add(movie)
+        movie_to_update = Movie.query.get(id_number)
+        movie_to_update.rating = request.form["rating"]
+        movie_to_update.ranking = request.form["ranking"]
+        movie_to_update.review = request.form["review"]
         db.session.commit()
+
         return redirect(url_for("home"))
 
     movie_to_edit = Movie.query.filter_by(id=id_number).first()

@@ -8,8 +8,6 @@ import requests
 import os
 
 
-
-
 # Initialise Flask app
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
@@ -108,9 +106,10 @@ def add():
 
         response = requests.get(tmdb_endpoint, params=query, headers=headers)
         response.raise_for_status()
-        print(response.json())
 
-        return redirect(url_for("select"))
+        movie_data = response.json()["results"]
+
+        return render_template("select.html", movies=movie_data)
 
     return render_template("add.html", form=form)
 

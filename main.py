@@ -28,6 +28,13 @@ class MovieForm(FlaskForm):
     submit = SubmitField("Submit")
 
 
+class EditForm(FlaskForm):
+    rating = IntegerField("Rating", validators=[DataRequired()])
+    ranking = IntegerField("Ranking", validators=[DataRequired()])
+    review = StringField("Review", validators=[DataRequired()])
+    submit = SubmitField("Submit")
+
+
 # Define models
 class Movie(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -73,15 +80,11 @@ def home():
 @app.route("/edit", methods=["GET", "POST"])
 def edit():
     id_number = request.args.get("id")
-    form = MovieForm()
+    form = EditForm()
     if form.validate_on_submit():
-        movie = Movie(title=request.form["title"],
-                      year=request.form["year"],
-                      description=request.form["description"],
-                      rating=request.form["rating"],
+        movie = Movie(rating=request.form["rating"],
                       ranking=request.form["ranking"],
                       review=request.form["review"],
-                      img_url=request.form["image_url"]
                       )
         db.session.add(movie)
         db.session.commit()
@@ -90,6 +93,15 @@ def edit():
     movie_to_edit = Movie.query.filter_by(id=id_number).first()
     return render_template("edit.html", movie=movie_to_edit, form=form)
 
+
+# movie = Movie(title=request.form["title"],
+#               year=request.form["year"],
+#               description=request.form["description"],
+#               rating=request.form["rating"],
+#               ranking=request.form["ranking"],
+#               review=request.form["review"],
+#               img_url=request.form["image_url"]
+#               )
 
 if __name__ == '__main__':
     app.run(debug=True)

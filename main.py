@@ -51,22 +51,6 @@ class Movie(db.Model):
 with app.app_context():
     db.create_all()
 
-    # Add example movie
-    # example_movie = Movie(title="Lawrence of Arabia",
-    #                       year="1962",
-    #                       description="The story of T.E. Lawrence, the English officer who successfully united and "
-    #                                   "led the diverse, often warring, Arab tribes during World War I in order to "
-    #                                   "fight the Turks.",
-    #                       rating="9",
-    #                       ranking="10",
-    #                       review="Vast, awe-inspiring, beautiful with ever-changing hues, exhausting and barren "
-    #                              "of humanity.",
-    #                       img_url="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Lawrence_of_arabia_ver3_xxlg."
-    #                               "jpg/800px-Lawrence_of_arabia_ver3_xxlg.jpg")
-    #
-    # db.session.add(example_movie)
-    # db.session.commit()
-
 
 @app.route("/")
 def home():
@@ -129,15 +113,6 @@ def add():
         return redirect(url_for("select"))
 
     return render_template("add.html", form=form)
-
-# movie = Movie(title=request.form["title"],
-#               year=request.form["year"],
-#               description=request.form["description"],
-#               rating=request.form["rating"],
-#               ranking=request.form["ranking"],
-#               review=request.form["review"],
-#               img_url=request.form["image_url"]
-#               )
 
 
 if __name__ == '__main__':

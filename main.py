@@ -41,7 +41,7 @@ class Movie(db.Model):
     img_url = db.Column(db.String(250), unique=False, nullable=False)
 
     def __repr__(self):
-        return f'<Book {self.title}>'
+        return f'<Movie {self.title}>'
 
 
 # Create database

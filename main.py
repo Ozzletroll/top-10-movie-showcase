@@ -7,7 +7,6 @@ from wtforms.validators import DataRequired, URL
 import requests
 import os
 
-
 # Initialise Flask app
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
@@ -109,9 +108,49 @@ def add():
 
         movie_data = response.json()["results"]
 
+        # Present user with list of potential matching movies.
         return render_template("select.html", movies=movie_data)
 
     return render_template("add.html", form=form)
+
+
+@app.route("/select", methods=["GET", "POST"])
+def select():
+    # Get movie title
+    title = request.args.get("title")
+
+    # Get release year
+    release_date = request.args.get("release_date")
+    year = release_date[:4]
+
+    # Get movie description
+    description = request.args.get("description")
+
+    # Get movie poster
+    base_url = "https://image.tmdb.org/t/p/"
+    file_size = "original"
+    poster_path = request.args.get("img_url")
+
+    img_url = base_url + file_size + poster_path
+
+    # Add the data to the database
+    movie_to_add = Movie(title=title,
+                         year=year,
+                         description=description,
+                         rating=0,
+                         ranking=0,
+                         review="",
+                         img_url=img_url)
+
+    db.session.add(movie_to_add)
+    db.session.commit()
+
+
+    # After adding new movie to database, redirect to edit page for the newly added movie.
+    # This will allow the user to fill the currently empty rating and review fields.
+
+    return redirect(url_for("edit", id=id_number))
+
 
 
 if __name__ == '__main__':

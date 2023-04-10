@@ -51,7 +51,13 @@ with app.app_context():
 
 @app.route("/")
 def home():
-    movies = db.session.query(Movie).all()
+    movies = db.session.query(Movie).order_by(Movie.rating.desc())
+
+    index = 1
+    for movie in movies:
+        movie.ranking = index
+        index += 1
+
     return render_template("index.html", movies=movies)
 
 
@@ -152,7 +158,6 @@ def select():
     # This will allow the user to fill the currently empty rating and review fields.
 
     return redirect(url_for("edit", id=id_number))
-
 
 
 if __name__ == '__main__':

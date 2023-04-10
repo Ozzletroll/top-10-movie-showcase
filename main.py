@@ -145,6 +145,8 @@ def select():
     db.session.add(movie_to_add)
     db.session.commit()
 
+    last_added_movie = Movie.query.filter_by(title=title).first()
+    id_number = last_added_movie.id
 
     # After adding new movie to database, redirect to edit page for the newly added movie.
     # This will allow the user to fill the currently empty rating and review fields.

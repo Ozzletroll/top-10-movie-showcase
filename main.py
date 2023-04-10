@@ -60,7 +60,7 @@ def edit():
     id_number = request.args.get("id")
     form = EditForm()
     if form.validate_on_submit():
-        movie_to_update = Movie.query.get(id_number)
+        movie_to_update = db.session.get(Movie, id_number)
         movie_to_update.rating = request.form["rating"]
         # movie_to_update.ranking = request.form["ranking"]
         movie_to_update.review = request.form["review"]
@@ -75,7 +75,7 @@ def edit():
 @app.route("/delete")
 def delete():
     id_number = request.args.get("id")
-    movie_to_delete = Movie.query.get(id_number)
+    movie_to_delete = db.session.get(Movie, id_number)
     db.session.delete(movie_to_delete)
     db.session.commit()
 
